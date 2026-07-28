@@ -1,0 +1,6 @@
+name: vinctor
+version: 0.5.0
+description: Vinctor pre_tool_call authorization boundary.
+author: Vinctor contributors
+provides_hooks:
+  - pre_tool_call

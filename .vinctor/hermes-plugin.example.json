@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "tool": "terminal",
+      "matchType": "prefix",
+      "pattern": "make deploy-staging",
+      "action": "execute",
+      "resource": "deploy/staging"
+    }
+  ]
+}
