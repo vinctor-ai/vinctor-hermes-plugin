@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Unit tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -q
+      - name: Compile
+        run: PYTHONPYCACHEPREFIX=/tmp/vinctor-hermes-plugin-pycache python -m compileall -q src scripts tests
+      - name: Lint
+        run: python -m ruff check .
+      - name: Plugin load smoke
+        run: PYTHONPATH=src python scripts/plugin_load_smoke.py
+      - name: Coverage harness smoke
+        run: PYTHONPATH=src python scripts/coverage_harness.py --json
+      - name: Claim safety
+        run: python scripts/claim_safety_scan.py
+      - name: Service-backed E2E
+        run: PYTHONPATH=src python scripts/service_backed_e2e.py
